@@ -4,6 +4,7 @@ Aturan utama: [AGENTS.md](../AGENTS.md). Baca sesuai tugas; untuk dokumen fitur,
 
 | Dokumen | Kebutuhan |
 | --- | --- |
+| [README root workspace](../../README.md) | Pengantar project, perintah Make dari root, akun dan sampel demo untuk juri. |
 | [agent-workflow.md](./agent-workflow.md) | Urutan pengerjaan dan penyelesaian tugas. |
 | [documentation-and-cleanup.md](./documentation-and-cleanup.md) | Aturan dokumentasi dan pembersihan berkas terkait perubahan. |
 | [features.md](./features.md) | Kontrak seluruh fitur aktif, per bagian. |
