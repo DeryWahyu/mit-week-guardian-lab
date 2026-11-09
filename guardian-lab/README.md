@@ -2,7 +2,7 @@
 
 Guardian Lab adalah platform anti-phishing dan analisis APK untuk MIT-Week 2026. Alurnya menghubungkan **pemeriksaan, penjelajahan terisolasi, pembelajaran, dan berbagi hasil** dalam satu akun.
 
-Aplikasi web menggunakan Next.js App Router, React, TypeScript, Bun, Prisma dan MySQL. Layanan model Python berada pada repository terpisah: [guardian-lab-ai](https://github.com/DeryWahyu/guardian-lab-ai).
+Aplikasi web menggunakan Next.js App Router, React, TypeScript, Bun, Prisma dan MySQL. Layanan model Python berada di folder sejajar [guardian-lab-ai](../guardian-lab-ai). [README root workspace](../README.md) memuat panduan dari root dengan `make -C guardian-lab ...`, akun demo dan sampel APK/QR untuk juri.
 
 ## Fitur utama
 
@@ -26,7 +26,7 @@ Kontrak lengkap dan batas tiap fitur ada pada [features.md](ai-agent-docs/featur
 
 ## Struktur checkout
 
-Letakkan kedua repository sebagai direktori sejajar agar Compose dapat menemukan layanan model:
+Folder web dan model harus sejajar agar Compose dapat menemukan layanan model. Repository workspace sudah menyertakan keduanya:
 
 ```text
 guardian-lab-workspace/
@@ -37,9 +37,8 @@ guardian-lab-workspace/
 Dari folder kerja:
 
 ```bash
-git clone https://github.com/DeryWahyu/guardian-lab.git
-git clone https://github.com/DeryWahyu/guardian-lab-ai.git
-cd guardian-lab
+git clone https://github.com/DeryWahyu/mit-week-guardian-lab.git guardian-lab-workspace
+cd guardian-lab-workspace/guardian-lab
 ```
 
 Pilih salah satu cara menjalankan aplikasi di bawah. Seluruh perintah web dijalankan dari root **guardian-lab**, tempat `package.json` berada.
@@ -128,7 +127,7 @@ Key broker pada aplikasi dan broker harus sama. Hentikan broker lokal dengan `bu
 
 ## Pilihan B: seluruh stack dengan Docker
 
-Gunakan Docker Engine Linux atau Docker Desktop dengan Linux containers serta **Docker Compose 2.32.2+**. Kedua repository harus berada pada susunan direktori di atas. Node/Bun, MySQL, Python dan Java untuk aplikasi dijalankan dalam container.
+Gunakan Docker Engine Linux atau Docker Desktop dengan Linux containers serta **Docker Compose 2.32.2+**. Kedua folder harus berada pada susunan direktori di atas. Node/Bun, MySQL, Python dan Java untuk aplikasi dijalankan dalam container. Perintah Make memerlukan GNU Make dan shell POSIX, misalnya Linux/macOS atau WSL pada Windows dengan akses Docker.
 
 1. Siapkan `.env` dan key dari root web. Dengan GNU Make pada shell yang mendukung Makefile proyek:
 
@@ -140,13 +139,23 @@ Gunakan Docker Engine Linux atau Docker Desktop dengan Linux containers serta **
 
 2. Isi `FONNTE_TOKEN` untuk OTP akun biasa dan `DEEPSEEK_API_KEY` bila ingin memakai DeepSeek. Pertahankan `NEXT_PUBLIC_APP_URL=http://localhost:3000` serta `SANDBOX_PUBLIC_URL=http://localhost:4010` untuk akses lokal.
 
-3. Jalankan stack dan biarkan terminal terbuka:
+3. Validasi konfigurasi, jalankan stack dan biarkan terminal terbuka:
 
    ```bash
+   make config
+   make dev
+   ```
+
+   `make run` dan `make up` adalah alias `make dev`. Daftar target tersedia melalui `make help`. Dari root workspace, tambahkan `-C guardian-lab`, misalnya `make -C guardian-lab dev`.
+
+   Jika GNU Make/shell POSIX tidak tersedia, jalankan Compose langsung dari folder `guardian-lab`:
+
+   ```powershell
+   docker compose --env-file .env -f docker/docker-compose.dev.yml config --quiet
    docker compose --env-file .env -f docker/docker-compose.dev.yml up --build --watch
    ```
 
-   Dengan GNU Make, perintah yang sama tersedia sebagai `make dev`. Bun di host juga menyediakan `bun run docker:dev`.
+   Bun di host juga menyediakan `bun run docker:dev`.
 
 Buka **http://localhost:3000**. Compose menjalankan web, MySQL 8.4, model V6 dan broker, sekaligus menyiapkan image browser/proxy sandbox. Startup development menerapkan migrasi serta seed materi Academy; akun/data demo dibuat melalui langkah opsional berikut.
 
@@ -155,9 +164,9 @@ Alamat database, model dan broker untuk container diatur otomatis oleh Compose. 
 Status, log dan penghentian:
 
 ```bash
-docker compose --env-file .env -f docker/docker-compose.dev.yml ps --all
-docker compose --env-file .env -f docker/docker-compose.dev.yml logs --follow --tail=100 app
-docker compose --env-file .env -f docker/docker-compose.dev.yml down
+make ps
+make logs SERVICE=app
+make down
 ```
 
 `down` mempertahankan volume database. Daftar shortcut Make dan rincian Watch ada pada [panduan Compose](ai-agent-docs/deployment.md#development-dengan-compose).
@@ -174,7 +183,7 @@ bun run db:seed
 Atau, dari terminal lain saat stack Compose berjalan:
 
 ```bash
-docker compose --env-file .env -f docker/docker-compose.dev.yml exec app bun run db:seed
+make db-seed
 ```
 
 | Peran | Nama                  | Email              |
@@ -184,11 +193,17 @@ docker compose --env-file .env -f docker/docker-compose.dev.yml exec app bun run
 | USER  | Dery Wahyu Perdana    | `dery@gmail.com`   |
 | USER  | Rafli Maulana         | `rafli@gmail.com`  |
 
+Target `make db-seed` memerlukan container aplikasi yang berjalan. Tanpa Make, gunakan `docker compose --env-file .env -f docker/docker-compose.dev.yml exec app bun run db:seed`.
+
 Password semua akun demo adalah **`password`**. Nomor seed sudah ditandai terverifikasi. Secara default setelah masuk, USER diarahkan ke landing, sedangkan ADMIN ke dashboard admin.
 
 Seeder lengkap menambahkan progres, EXP, lencana, aktivitas, riwayat dan kasus contoh agar tampilan dapat didemokan. Data simulasi diberi penanda `[DEMO]`/`LOCAL_DEMO`; skor APK demo bukan keluaran AI dan URL/QR demo tanpa pemanggilan model tetap berstatus `UNAVAILABLE`.
 
 Seed ulang tidak menggandakan aktivitas/hadiah demo, tetapi mengembalikan nama, peran, nomor dan password akun pada daftar seed; sesi dicabut bila kredensial/peran/nomor berubah. Jalankan pada database pengembangan yang memang akan diberi data contoh. Detail sumber dan perilakunya ada pada [panduan seeder](ai-agent-docs/deployment.md#alternatif-menjalankan-proses-di-host).
+
+## Sampel untuk juri
+
+Berkas [Undangan_Pernikahan_Simulasi.apk](demo-samples/Undangan_Pernikahan_Simulasi.apk) dan [01-qr-tautan-contoh.png](demo-samples/01-qr-tautan-contoh.png) tersedia di [demo-samples](demo-samples). Juri dapat mengunduhnya melalui **Download raw file** di GitHub, masuk dengan akun USER, lalu mengunggah APK ke **Bedah APK** atau PNG ke tab **QR** pada pemeriksaan landing. APK cukup diunggah untuk analisis statis, tanpa dipasang. Hasil mengikuti analisis yang tersedia saat dijalankan; tidak ada skor wajib sampel. [Alur demo lengkap](../README.md#demo-sample-apps-untuk-juri) berada pada README root.
 
 ## Kendala umum
 
