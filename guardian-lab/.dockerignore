@@ -1,0 +1,15 @@
+.git
+.github
+.husky
+.next
+node_modules
+.tools
+test-results
+npm-debug.log
+yarn-error.log
+.env*
+!.env.example
+ai-agent-docs
+README.md
+Makefile
+scripts/generate-keys.mjs

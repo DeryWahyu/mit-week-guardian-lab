@@ -1,0 +1,23 @@
+.scene {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  min-width: 0;
+  aspect-ratio: 1.06;
+  pointer-events: none;
+}
+.presenter {
+  position: absolute;
+  z-index: 2;
+  bottom: 2%;
+  left: -6%;
+  width: 64%;
+  height: auto;
+  filter: drop-shadow(0 12px 10px #1b36551a);
+}
+@media (max-width: 800px) {
+  .scene {
+    max-width: 540px;
+    margin: 0 auto;
+  }
+}

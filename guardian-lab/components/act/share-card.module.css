@@ -1,0 +1,119 @@
+/* Use export-safe fonts and px values on both the preview and 600px PNG canvas. */
+.card {
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  padding: 24px;
+  border: 1px solid #dbe5ed;
+  border-radius: 20px;
+  background: #fff;
+  color: #283a50;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.7;
+}
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid #e3eaf1;
+}
+.type {
+  padding: 4px 9px;
+  border: 1px solid #dfebf2;
+  border-radius: 8px;
+  background: #f7fbfd;
+  color: #52677b;
+  font-size: 11px;
+}
+.riskPanel {
+  display: grid;
+  gap: 12px;
+  margin-top: 20px;
+  padding: 20px;
+  border-radius: 15px;
+}
+.riskLabel {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 700;
+}
+.riskLabel svg {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  margin-top: 2px;
+}
+.riskPanel h2 {
+  color: #18263d;
+  font-size: 25px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+.score {
+  padding-top: 12px;
+  border-top: 1px solid #64748b26;
+  color: #46576c;
+  font-size: 12px;
+}
+.score strong {
+  margin-left: 5px;
+  color: #24364b;
+  font-size: 18px;
+}
+.targetBlock {
+  margin-top: 22px;
+}
+.targetBlock > p:first-child {
+  color: #5b7185;
+  font-size: 11px;
+  font-weight: 700;
+}
+.target {
+  margin-top: 8px;
+  padding: 12px 14px;
+  border: 1px solid #e2eaf1;
+  border-radius: 10px;
+  background: #f5f9fc;
+  color: #3c5269;
+  font-family: monospace;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+.summary {
+  margin-top: 22px;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+.summary > p:first-child {
+  margin-bottom: 8px;
+  color: #233b51;
+  font-size: 14px;
+  font-weight: 700;
+}
+.summary ul {
+  display: grid;
+  gap: 7px;
+  margin-top: 13px;
+  padding-left: 18px;
+  list-style: disc;
+}
+.footer {
+  display: grid;
+  gap: 8px;
+  margin-top: 24px;
+  padding-top: 17px;
+  border-top: 1px solid #e0e8f0;
+  color: #64748b;
+  font-size: 11px;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+.notice {
+  color: #7c642e;
+}

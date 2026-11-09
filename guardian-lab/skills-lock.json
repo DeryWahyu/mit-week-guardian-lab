@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "skills": {
+    "frontend-design": {
+      "source": "anthropics/skills",
+      "sourceType": "github",
+      "skillPath": "skills/frontend-design/SKILL.md",
+      "computedHash": "89496d5dd00f4810205f351759594fc2742bf8eea85a2f2b2d1de59f4bd91576"
+    },
+    "microinteractions": {
+      "source": "wondelai/skills",
+      "sourceType": "github",
+      "skillPath": "microinteractions/SKILL.md",
+      "computedHash": "0062b8e7d7bd5ad6820c8370423fb5074ab961861704ac0e93af4e5a2467ba1c"
+    },
+    "motion-design": {
+      "source": "lottiefiles/motion-design-skill",
+      "sourceType": "github",
+      "skillPath": "skills/motion-design/SKILL.md",
+      "computedHash": "9fcf9130cc46ee8fd1d8e09a9263347a9d76efbcbfa46591cc4cefaf19bbb453"
+    }
+  }
+}

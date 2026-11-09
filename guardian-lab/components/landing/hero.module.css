@@ -1,0 +1,298 @@
+.hero {
+  --hero-top-offset: 74px;
+  position: relative;
+  isolation: isolate;
+  min-height: calc(100vh - var(--hero-top-offset));
+  min-height: calc(100dvh - var(--hero-top-offset));
+}
+.hero::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: calc(-1 * var(--hero-top-offset)) 0 0;
+  background: var(--guardian-page-background);
+  pointer-events: none;
+}
+.backdrop {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  overflow: clip;
+  pointer-events: none;
+}
+.scenery {
+  position: absolute;
+  inset: 0;
+}
+.ribbon {
+  position: absolute;
+  top: 48%;
+  left: 53%;
+  width: clamp(480px, 54vw, 900px);
+  aspect-ratio: 1;
+  background: linear-gradient(140deg, #d8f6fc, #c5eef8 60%, #e6f8fc);
+  mask: url("/brand/guardian-lab-koneksi.png") center / contain no-repeat;
+  opacity: 0.45;
+  transform: translate(-50%, -50%);
+}
+.stage {
+  display: grid;
+  min-height: inherit;
+  align-items: center;
+  padding-block: clamp(24px, 4dvh, 40px);
+}
+.composition {
+  --hero-mascot-space: clamp(440px, 62dvh, 540px);
+  --hero-mascot-height: calc(var(--hero-mascot-space) * 1.6);
+  display: grid;
+  grid-template-columns: minmax(0, 38fr) minmax(0, 40fr) minmax(0, 22fr);
+  width: 100%;
+  max-width: 1120px;
+  margin-inline: auto;
+}
+.wordmark {
+  position: relative;
+  z-index: 0;
+  grid-column: 1 / -1;
+  margin: 0;
+  color: #0f172a;
+  font-size: clamp(76px, 9.5vw, 136px);
+  font-weight: 800;
+  letter-spacing: -0.065em;
+  line-height: 0.95;
+  text-align: center;
+  white-space: nowrap;
+  user-select: none;
+}
+.intro {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  grid-column: 1;
+  grid-row: 2;
+  width: 100%;
+  max-width: 400px;
+  min-height: calc(
+    var(--hero-mascot-space) * 0.64 - 76px +
+      (var(--hero-mascot-height) - var(--hero-mascot-space)) * 0.15
+  );
+  margin-top: 24px;
+  flex-direction: column;
+  justify-content: center;
+}
+.intro .title {
+  margin: 0;
+  color: #0f172a;
+  font-size: clamp(40px, 4vw, 52px);
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  line-height: 1.12;
+}
+.title .titleAccent {
+  display: inline-block;
+  color: var(--landing-cyan, #0891b2);
+}
+.hero:focus-visible .intro .title {
+  text-decoration: none;
+}
+.intro > p {
+  max-width: 345px;
+  margin-top: 16px;
+  color: #475979;
+  font-size: 16px;
+  line-height: 1.75;
+}
+.intro > p strong {
+  color: #284b62;
+  font-weight: 650;
+}
+.supportCopy {
+  position: relative;
+  z-index: 3;
+  grid-column: 3;
+  grid-row: 2;
+  align-self: center;
+  justify-self: end;
+  min-width: 0;
+  max-width: 220px;
+  padding-left: 12px;
+}
+.supportEyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0 0 15px;
+  padding: 5px 9px;
+  border: 1px solid #cee8ef;
+  border-radius: 999px;
+  background: #ffffffb3;
+  color: #0e7490;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.045em;
+  line-height: 1.6;
+  text-transform: uppercase;
+}
+.supportEyebrow svg {
+  flex-shrink: 0;
+}
+.supportCopy .supportTitle {
+  margin: 0;
+  color: #0f172a;
+  font-size: clamp(22px, 1.8vw, 24px);
+  font-weight: 750;
+  letter-spacing: -0.035em;
+  line-height: 1.35;
+}
+.supportTitle span {
+  color: var(--landing-cyan, #0891b2);
+}
+.supportDescription {
+  margin-top: 14px;
+  color: #475979;
+  font-size: 14px;
+  line-height: 1.75;
+}
+.formSlot {
+  position: relative;
+  z-index: 2;
+  grid-column: 1 / -1;
+  grid-row: 3;
+  width: calc(100% - 112px);
+  min-width: 0;
+  min-height: calc(var(--hero-mascot-height) * 0.36 + 32px);
+  margin-inline: auto;
+  scroll-margin-top: 112px;
+  border-radius: 20px;
+}
+.formSlot:focus-visible {
+  outline: 3px solid #0e7490;
+  outline-offset: 6px;
+}
+.visual,
+.hand {
+  position: absolute;
+  top: calc(var(--hero-mascot-height) * -0.64);
+  left: calc(40% - (var(--hero-mascot-height) - var(--hero-mascot-space)) / 3);
+  width: calc(var(--hero-mascot-height) * 2 / 3);
+  height: var(--hero-mascot-height);
+  pointer-events: none;
+}
+.visual {
+  z-index: 0;
+}
+.visual::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  right: 7%;
+  bottom: 1%;
+  left: 7%;
+  height: 4%;
+  border-radius: 50%;
+  background: #434a7a1a;
+  filter: blur(8px);
+}
+.fox,
+.hand img {
+  object-fit: contain;
+  user-select: none;
+}
+.hand {
+  z-index: 3;
+  /* Follow the paw at the rim so the trousers stay behind the form surface. */
+  clip-path: polygon(60% 57%, 82% 57%, 82% 66%, 65% 66%, 65% 64%, 60% 64%);
+}
+@media (max-width: 1199px) {
+  .composition {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .intro {
+    width: 38%;
+  }
+  .supportCopy {
+    grid-column: 1;
+    grid-row: 4;
+    justify-self: center;
+    width: 100%;
+    max-width: 420px;
+    margin-top: 24px;
+    padding-inline: 16px;
+    text-align: center;
+  }
+}
+@media (max-width: 1099px) and (min-width: 768px) {
+  .composition {
+    --hero-mascot-space: clamp(380px, 56dvh, 460px);
+    --hero-mascot-height: calc(var(--hero-mascot-space) * 1.18);
+    max-width: 960px;
+  }
+  .wordmark {
+    font-size: clamp(76px, 10.4vw, 112px);
+  }
+  .intro {
+    width: 39%;
+    min-height: calc(var(--hero-mascot-space) * 0.64 - 76px);
+  }
+  .intro .title {
+    font-size: clamp(36px, 4.2vw, 46px);
+  }
+  .intro > p {
+    max-width: 300px;
+    font-size: 14px;
+  }
+  .formSlot {
+    width: calc(100% - 64px);
+  }
+}
+@media (max-width: 767px) {
+  .hero {
+    --hero-top-offset: 72px;
+  }
+  .stage {
+    padding-block: 24px;
+  }
+  .composition {
+    --hero-mascot-space: clamp(300px, 44dvh, 360px);
+    --hero-mascot-height: calc(var(--hero-mascot-space) * 1.1);
+    max-width: 520px;
+  }
+  .wordmark {
+    margin-bottom: 28px;
+    font-size: clamp(30px, 9.2vw, 56px);
+  }
+  .intro {
+    align-items: center;
+    width: 100%;
+    max-width: none;
+    min-height: 0;
+    margin-top: 0;
+    text-align: center;
+  }
+  .intro .title {
+    font-size: clamp(32px, 8vw, 42px);
+  }
+  .intro > p {
+    max-width: 340px;
+    margin-top: 12px;
+    font-size: 14px;
+  }
+  .formSlot {
+    width: 100%;
+    margin-top: calc(var(--hero-mascot-height) * 0.64 - 24px);
+    scroll-margin-top: 104px;
+  }
+  .visual,
+  .hand {
+    left: calc(55% - var(--hero-mascot-height) * 0.47);
+  }
+  .ribbon {
+    width: clamp(420px, 110vw, 620px);
+    opacity: 0.35;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .scenery {
+    transform: none !important;
+  }
+}

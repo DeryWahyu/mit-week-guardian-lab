@@ -1,0 +1,367 @@
+.page.page {
+  --academy-ink: #111a37;
+  --academy-muted: #52617a;
+  --academy-teal: #087f8d;
+  --academy-border: #dfe8ee;
+  --font-workspace-display: var(--font-landing-sans);
+  color: var(--academy-ink);
+}
+.hub.hub {
+  --academy-border: #d9e2f3;
+}
+.hub > main {
+  padding-top: 30px;
+  padding-bottom: 52px;
+}
+.page :is(h1, h2, h3, h4, button, input, select, textarea) {
+  font-family: inherit;
+}
+.pageContent {
+  display: grid;
+  gap: 24px;
+  min-width: 0;
+}
+.primaryButton,
+.secondaryButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 46px;
+  padding: 11px 17px;
+  border: 1px solid transparent;
+  border-radius: 11px;
+  font-size: 12px;
+  font-weight: 650;
+  line-height: 1.7;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+.primaryButton {
+  border-color: #0c8c9b;
+  background: linear-gradient(105deg, #087f8d, #006d7c);
+  color: #fff;
+}
+.primaryButton:hover:not(:disabled) {
+  background: #076878;
+}
+.secondaryButton {
+  border-color: #d6e2ec;
+  background: #fff;
+  color: #38556b;
+}
+.secondaryButton:hover:not(:disabled) {
+  border-color: #bddde3;
+  background: #f0fafb;
+  color: #087f8d;
+}
+.primaryButton:disabled,
+.secondaryButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+.primaryButton svg,
+.secondaryButton svg {
+  flex-shrink: 0;
+}
+.activity {
+  min-width: 0;
+  overflow: hidden;
+  padding: 20px 22px 10px;
+  border: 1px solid var(--academy-border);
+  border-radius: 20px;
+  background: #ffffffc2;
+  box-shadow: 0 5px 14px #30467708;
+}
+.sectionHeading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+.sectionHeading h2 {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.035em;
+}
+.sectionHeading p {
+  margin-top: 8px;
+  color: var(--academy-muted);
+  font-size: 11px;
+  line-height: 1.8;
+}
+.activityEmpty {
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  margin-block: 23px 15px;
+  padding: 41px 24px 30px;
+  border: 1px dashed #d6e5e9;
+  border-radius: 15px;
+  background: #fcfefe;
+  text-align: center;
+}
+.activityEmpty > span {
+  margin-bottom: 3px;
+}
+.activityEmpty h3 {
+  color: #334a60;
+  font-size: 14px;
+  font-weight: 700;
+}
+.activityEmpty p {
+  max-width: 315px;
+  color: var(--academy-muted);
+  font-size: 12px;
+  line-height: 1.85;
+}
+.activityEmpty a {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 44px;
+  color: var(--academy-teal);
+  font-size: 12px;
+  font-weight: 650;
+  text-decoration: none;
+}
+.activityTable {
+  width: 100%;
+  margin-top: 18px;
+  border-collapse: collapse;
+  table-layout: fixed;
+  text-align: left;
+}
+.activityTable thead th:first-child {
+  width: 41%;
+}
+.activityTable thead th {
+  padding: 0 10px 14px;
+  color: #657988;
+  font-size: 10px;
+  font-weight: 600;
+}
+.activityTable thead th:first-child,
+.activityTable tbody th {
+  padding-left: 0;
+}
+.activityTable tbody tr {
+  border-top: 1px solid #e6edf0;
+}
+.activityTable tbody th,
+.activityTable td {
+  padding: 13px 10px;
+  font-size: 12px;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+.activityTable tbody th {
+  color: #334d62;
+  font-weight: 650;
+}
+.activityTable td {
+  color: #657a8a;
+}
+.activityTable td:last-child {
+  padding-right: 0;
+}
+.activityTable td > span {
+  white-space: nowrap;
+}
+.activityTable .earnedExp {
+  color: var(--academy-teal);
+  font-weight: 650;
+}
+.problem {
+  display: grid;
+  justify-items: center;
+  gap: 18px;
+  padding: 60px 24px;
+  border: 1px solid var(--academy-border);
+  border-radius: 22px;
+  background: #fff;
+  text-align: center;
+}
+.problem > span {
+  display: grid;
+  width: 64px;
+  height: 64px;
+  place-items: center;
+  border: 1px solid #d8ebee;
+  border-radius: 20px;
+  background: #eef9fa;
+  color: var(--academy-teal);
+}
+.problem h1 {
+  font-size: 28px;
+  font-weight: 750;
+  letter-spacing: -0.04em;
+}
+.problem p {
+  max-width: 480px;
+  color: var(--academy-muted);
+  font-size: 13px;
+  line-height: 1.8;
+}
+.problem > div {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+.skeleton {
+  display: grid;
+  gap: 32px;
+}
+.skeletonHero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  align-items: center;
+  gap: 40px;
+  min-height: 330px;
+}
+.skeletonCopy {
+  display: grid;
+  gap: 16px;
+}
+.skeletonCopy span {
+  width: 86%;
+  height: 38px;
+  border-radius: 8px;
+  background: #edf4f6;
+}
+.skeletonCopy span:nth-child(2) {
+  width: 75%;
+  background: #e6f4f6;
+}
+.skeletonCopy span:last-child {
+  width: 100%;
+  height: 100px;
+  margin-top: 12px;
+}
+.skeletonArtwork {
+  width: 100%;
+  max-width: 475px;
+  aspect-ratio: 440 / 350;
+  justify-self: center;
+  border-radius: 50%;
+  background: #edf9fa;
+}
+.skeletonMetrics {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 22px;
+  padding: 24px;
+  border: 1px solid var(--academy-border);
+  border-radius: 18px;
+}
+.skeletonMetrics span {
+  height: 45px;
+  border-radius: 8px;
+  background: #edf5f7;
+}
+.skeletonBody {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+.skeletonBody > div {
+  display: grid;
+  align-content: start;
+  gap: 18px;
+  min-height: 280px;
+  padding: 15px;
+  border: 1px solid var(--academy-border);
+  border-radius: 20px;
+}
+.skeletonBody span {
+  height: 20px;
+  border-radius: 8px;
+  background: #edf5f7;
+}
+.skeletonBody span:first-child {
+  height: 140px;
+  border-radius: 12px;
+  background: #edf9fa;
+}
+.skeletonOverview {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+.skeletonOverview > span,
+.skeletonActivity {
+  min-height: 205px;
+  border: 1px solid var(--academy-border);
+  border-radius: 20px;
+  background: #ffffffb8;
+}
+.skeletonActivity {
+  min-height: 150px;
+}
+@media (max-width: 1000px) {
+  .activity {
+    padding: 22px;
+  }
+  .skeletonBody {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 700px) {
+  .pageContent,
+  .skeleton {
+    gap: 28px;
+  }
+  .skeletonHero {
+    grid-template-columns: minmax(0, 1fr);
+    min-height: 270px;
+  }
+  .skeletonArtwork {
+    max-width: 280px;
+  }
+  .skeletonMetrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+  }
+}
+@media (max-width: 600px) {
+  .skeletonOverview {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .skeletonBody {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .activityTable,
+  .activityTable tbody {
+    display: block;
+  }
+  .activityTable thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .activityTable tbody tr {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    padding-block: 18px;
+  }
+  .activityTable tbody th {
+    grid-column: 1 / -1;
+    padding: 0;
+  }
+  .activityTable td {
+    padding: 0;
+  }
+  .activityTable td::before {
+    content: attr(data-label);
+    display: block;
+    margin-bottom: 3px;
+    color: #687d8d;
+    font-size: 10px;
+  }
+}

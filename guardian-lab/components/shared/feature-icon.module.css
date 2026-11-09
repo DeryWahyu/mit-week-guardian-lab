@@ -1,0 +1,131 @@
+:where(.icon) {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: 40px;
+  height: 42px;
+  flex: 0 0 auto;
+  border-radius: 13px;
+}
+.icon {
+  --icon-ink: #07858f;
+  --icon-light: #f2fdfc;
+  --icon-soft: #d5f2f1;
+  --icon-line: #c2e9e6;
+  overflow: hidden;
+  border: 1px solid var(--icon-line);
+  background: linear-gradient(145deg, var(--icon-light), var(--icon-soft));
+  color: var(--icon-ink);
+  box-shadow:
+    inset 0 1px 0 #ffffffeb,
+    0 2px 4px #253e6906;
+  vertical-align: middle;
+}
+.icon[data-tone="gold"] {
+  --icon-ink: #b8780e;
+  --icon-light: #fffbef;
+  --icon-soft: #ffebba;
+  --icon-line: #f5dfaa;
+}
+.icon[data-tone="violet"] {
+  --icon-ink: #7a54c5;
+  --icon-light: #faf6ff;
+  --icon-soft: #ebdffd;
+  --icon-line: #dfd0f5;
+}
+.icon[data-tone="red"] {
+  --icon-ink: #d73f45;
+  --icon-light: #fff7f3;
+  --icon-soft: #ffded4;
+  --icon-line: #facac2;
+}
+.icon[data-tone="blue"] {
+  --icon-ink: #287cbd;
+  --icon-light: #f4fbff;
+  --icon-soft: #dceefc;
+  --icon-line: #c8e1f5;
+}
+.icon[data-tone="green"] {
+  --icon-ink: #188b65;
+  --icon-light: #f1fcf7;
+  --icon-soft: #d9f3e4;
+  --icon-line: #bfe7d1;
+}
+.icon > svg {
+  width: 61%;
+  height: 61%;
+  color: var(--icon-ink);
+  stroke: var(--icon-ink);
+}
+.icon[data-icon="streak"] > svg {
+  fill: #ff9179;
+}
+.icon[data-icon="rank"] > svg {
+  fill: #ffdf8d;
+  fill-opacity: 0.65;
+}
+.icon[data-icon="exp"] > svg {
+  fill: #c9a8ef;
+}
+.icon[data-icon="badge"] > svg circle {
+  fill: #ffdb7b;
+}
+.icon[data-size="small"] {
+  width: 37px;
+  height: 40px;
+  border-radius: 12px;
+}
+.icon[data-size="large"] {
+  width: 72px;
+  height: 72px;
+  border-radius: 22px;
+}
+.icon[data-icon="badge"][data-size="large"] {
+  border-radius: 50%;
+}
+.icon[data-size="inline"] {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 18px;
+  overflow: visible;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.icon[data-size="inline"] > svg {
+  width: 100%;
+  height: 100%;
+}
+.icon[data-muted="true"] {
+  filter: saturate(0.45);
+  opacity: 0.8;
+}
+
+.icon[data-tone="slate"] {
+  --icon-ink: #64748b;
+  --icon-light: #f8fafc;
+  --icon-soft: #e9eef5;
+  --icon-line: #d7e0eb;
+}
+.icon[data-tone="silver"] {
+  --icon-ink: #61748c;
+  --icon-light: #f8fbff;
+  --icon-soft: #e3eaf4;
+  --icon-line: #d0dce9;
+}
+.icon[data-tone="bronze"] {
+  --icon-ink: #a26237;
+  --icon-light: #fffaf3;
+  --icon-soft: #f3dfc7;
+  --icon-line: #e9cfb4;
+}
+.icon[data-icon="crown"] > svg {
+  fill: #ffdf8d;
+}
+.icon[data-icon="silverMedal"] > svg circle {
+  fill: #cedae9;
+}
+.icon[data-icon="bronzeMedal"] > svg circle {
+  fill: #e6bd94;
+}

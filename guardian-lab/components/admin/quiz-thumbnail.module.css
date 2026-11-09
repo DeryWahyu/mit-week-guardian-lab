@@ -1,0 +1,161 @@
+.field {
+  display: grid;
+  min-width: 0;
+  gap: 10px;
+}
+.label {
+  color: #193950;
+  font-size: 14px;
+  font-weight: 600;
+}
+.help {
+  color: #647b8d;
+  font-size: 12px;
+  line-height: 1.8;
+}
+.dropZone {
+  min-width: 0;
+  padding: 12px;
+  border: 1px dashed #aacfd7;
+  border-radius: 16px;
+  background: #f6fcfd;
+}
+.dropZone:focus-within,
+.dragging {
+  border-color: #008c9b;
+  outline: 2px solid #b9e8ef;
+  outline-offset: 3px;
+}
+.dropZone:disabled {
+  opacity: 0.6;
+}
+.input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.picker {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 24px;
+  cursor: pointer;
+}
+.preview {
+  position: relative;
+  display: block;
+  aspect-ratio: 2;
+  overflow: hidden;
+  border-radius: 10px;
+  background: #e5f4f7;
+}
+.instructions {
+  display: grid;
+  justify-items: start;
+  gap: 8px;
+  color: #193950;
+  font-size: 13px;
+}
+.instructions > span:not(.icon, .choose) {
+  color: #647b8d;
+  font-size: 12px;
+  line-height: 1.8;
+}
+.icon {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: #dff3f7;
+  color: #00818f;
+}
+.choose {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 8px 14px;
+  border: 1px solid #b9dce2;
+  border-radius: 10px;
+  background: white;
+  color: #007c8b;
+  font-size: 12px;
+  font-weight: 600;
+}
+.selection {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  color: #526f82;
+  font-size: 12px;
+}
+.selection > p {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+}
+.actions button {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 40px;
+  color: #007c8b;
+  font-weight: 600;
+}
+.actions button:focus-visible {
+  outline: 2px solid #008c9b;
+  outline-offset: 3px;
+  border-radius: 5px;
+}
+.error {
+  color: #ae2444;
+  font-size: 12px;
+  line-height: 1.8;
+}
+.listSummary {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: 14px;
+}
+.listSummary > div:last-child {
+  min-width: 0;
+}
+.quizRow > div:last-child {
+  flex: 0 0 auto;
+}
+.listCover {
+  position: relative;
+  flex: 0 0 96px;
+  height: 48px;
+  overflow: hidden;
+  border-radius: 9px;
+  background: #e5f4f7;
+}
+@media (max-width: 600px) {
+  .quizRow {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .picker {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+  }
+  .instructions {
+    gap: 6px;
+  }
+  .icon {
+    display: none;
+  }
+}

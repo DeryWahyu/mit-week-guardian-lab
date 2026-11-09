@@ -1,0 +1,43 @@
+/* These snapshots belong only to user content; navbar and footer retain their position. */
+:root:has([data-user-transition])::view-transition {
+  pointer-events: none;
+}
+:root:has([data-user-transition])::view-transition-old(root) {
+  animation: none;
+  opacity: 0;
+}
+:root:has([data-user-transition])::view-transition-new(root) {
+  animation: none;
+}
+::view-transition-group(.guardian-user-page) {
+  animation-duration: 380ms;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+::view-transition-old(.guardian-user-page) {
+  animation: guardianUserPageOut 140ms ease-out both;
+}
+::view-transition-new(.guardian-user-page) {
+  animation: guardianUserPageIn 380ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes guardianUserPageOut {
+  to {
+    opacity: 0;
+  }
+}
+@keyframes guardianUserPageIn {
+  from {
+    opacity: 0;
+    translate: 0 12px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(.guardian-user-page),
+  ::view-transition-old(.guardian-user-page),
+  ::view-transition-new(.guardian-user-page) {
+    animation: none;
+  }
+}

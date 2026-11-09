@@ -1,0 +1,37 @@
+.artwork {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.browserTitle {
+  fill: #fff;
+  font-size: 11.7px;
+  font-weight: 750;
+  letter-spacing: -0.3px;
+}
+.screenCaption {
+  fill: #7a86a6;
+  font-size: 12.7px;
+  font-weight: 700;
+  letter-spacing: -0.25px;
+}
+.speechText {
+  fill: #15203d;
+  font-size: 13.4px;
+  font-weight: 800;
+  letter-spacing: -0.4px;
+}
+.durationText {
+  fill: #075570;
+  font-size: 11.2px;
+  font-weight: 750;
+  letter-spacing: -0.3px;
+}
+.artwork[data-variant="apk"] .browserTitle {
+  font-size: 14px;
+}
+.apkFile {
+  color: #a0aecb;
+}

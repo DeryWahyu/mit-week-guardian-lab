@@ -1,0 +1,404 @@
+// Prisma Schema for Guardian Lab
+// Database: MySQL (connection configured through DATABASE_URL)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// -------------------------------------------------------------
+// ENUMS
+// -------------------------------------------------------------
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum ScanType {
+  URL
+  QR
+  APK
+}
+
+enum InvestigationStatus {
+  RECEIVED
+  PROCESSING
+  COMPLETED
+  FAILED
+  UNAVAILABLE
+}
+
+enum RiskLevel {
+  SAFE
+  WARNING
+  DANGEROUS
+  PHISHING
+  MALWARE
+  CRITICAL
+  HIGH
+  MEDIUM
+  LOW
+}
+
+enum SandboxType {
+  WEB
+  ANDROID
+}
+
+enum SandboxStatus {
+  STARTING
+  ACTIVE
+  EXPIRED
+  DESTROYED
+  FAILED
+}
+
+enum QuizCategory {
+  SPOT_THE_PHISH
+  SOCIAL_ENGINEERING
+  DANGEROUS_PERMISSIONS
+}
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+
+enum QuestionType {
+  MULTIPLE_CHOICE
+  TRUE_FALSE
+  IMAGE_CHOICE
+}
+
+enum ReplayStatus {
+  PENDING_REVIEW
+  APPROVED
+  REJECTED
+}
+
+// -------------------------------------------------------------
+// MODELS
+// -------------------------------------------------------------
+
+model User {
+  id               String    @id @default(cuid())
+  email            String    @unique
+  passwordHash     String
+  name             String
+  phone            String?   @unique @db.VarChar(16)
+  phoneVerifiedAt  DateTime?
+  role             Role      @default(USER)
+  exp              Int       @default(0)
+  streakDays       Int       @default(0)
+  lastLearningAt   DateTime?
+  lastActiveAt     DateTime  @default(now())
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  suspendedAt      DateTime?
+  suspensionReason String?   @db.Text
+
+  // Relations
+  sessions             Session[]
+  authChallenges       AuthChallenge[]
+  forensicRecords      ForensicRecord[]
+  sandboxSessions      SandboxSession[]
+  userBadges           UserBadge[]
+  quizAttempts         QuizAttempt[]
+  communityReplays     CommunityReplay[]
+  reviewedReplays      CommunityReplay[]          @relation("ReplayReviewer")
+  replayAttempts       ReplayAttempt[]
+  auditActions         AdminAuditLog[]
+  investigationReviews AdminInvestigationReview[]
+
+  @@index([email])
+  @@index([role])
+}
+
+model AdminAuditLog {
+  id         String   @id @default(cuid())
+  actorId    String?
+  action     String   @db.VarChar(64)
+  entityType String   @db.VarChar(32)
+  entityId   String   @db.VarChar(191)
+  reason     String?  @db.Text
+  details    Json
+  createdAt  DateTime @default(now())
+  actor      User?    @relation(fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([createdAt, id])
+  @@index([actorId, createdAt])
+  @@index([action, createdAt])
+}
+
+model AdminInvestigationReview {
+  id              String         @id @default(cuid())
+  investigationId String         @unique
+  reviewerId      String
+  status          String         @db.VarChar(32)
+  note            String         @db.Text
+  updatedAt       DateTime       @updatedAt
+  investigation   ForensicRecord @relation(fields: [investigationId], references: [id], onDelete: Cascade)
+  reviewer        User           @relation(fields: [reviewerId], references: [id], onDelete: Restrict)
+}
+
+model AuthChallenge {
+  id             String    @id @default(cuid())
+  tokenHash      String    @unique @db.Char(64)
+  userId         String?
+  purpose        String    @db.VarChar(16)
+  phoneHash      String    @db.Char(64)
+  codeHash       String?   @db.Char(64)
+  codeExpiresAt  DateTime?
+  deliveryStatus String?   @db.VarChar(16)
+  redirectTo     String    @db.Text
+  attempts       Int       @default(0)
+  lastSentAt     DateTime?
+  expiresAt      DateTime
+  consumedAt     DateTime?
+  createdAt      DateTime  @default(now())
+  user           User?     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, purpose])
+  @@index([expiresAt])
+}
+
+model AuthRateLimit {
+  key       String   @id @db.VarChar(128)
+  count     Int      @default(0)
+  expiresAt DateTime
+
+  @@index([expiresAt])
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique @db.VarChar(500)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model ForensicRecord {
+  id                String              @id @default(cuid())
+  userId            String
+  target            String              @db.Text
+  type              ScanType
+  status            InvestigationStatus @default(RECEIVED)
+  riskLevel         RiskLevel?
+  riskScore         Int?
+  scamCategory      String?
+  summary           String?             @db.Text
+  deceptionTricks   Json                @default("[]")
+  technicalEvidence Json                @default("{}")
+  inputMetadata     Json                @default("{}")
+  analysisSource    String?
+  modelVersion      String?
+  errorCode         String?
+  errorMessage      String?             @db.Text
+  defangedTarget    String              @db.Text
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  startedAt         DateTime?
+  finishedAt        DateTime?
+
+  // Relations
+  user            User                      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  communityReplay CommunityReplay?
+  sandboxSessions SandboxSession[]          @relation("SandboxSource")
+  sandboxDownload SandboxDownloadAnalysis?
+  adminReview     AdminInvestigationReview?
+
+  @@index([userId])
+  @@index([type])
+  @@index([riskLevel])
+  @@index([createdAt])
+  @@index([userId, status, createdAt])
+}
+
+model SandboxSession {
+  id                    String        @id @default(cuid())
+  userId                String
+  targetUrl             String        @db.Text
+  type                  SandboxType
+  status                SandboxStatus @default(ACTIVE)
+  startedAt             DateTime      @default(now())
+  expiresAt             DateTime
+  destroyedAt           DateTime?
+  sourceInvestigationId String?
+
+  // Relations
+  user                User                      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sourceInvestigation ForensicRecord?           @relation("SandboxSource", fields: [sourceInvestigationId], references: [id], onDelete: SetNull)
+  downloadAnalyses    SandboxDownloadAnalysis[]
+
+  @@index([userId])
+  @@index([status])
+  @@index([startedAt])
+  @@index([sourceInvestigationId])
+}
+
+model SandboxDownloadAnalysis {
+  sessionId  String
+  downloadId String
+  recordId   String?         @unique
+  session    SandboxSession  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  record     ForensicRecord? @relation(fields: [recordId], references: [id], onDelete: SetNull)
+
+  @@id([sessionId, downloadId])
+}
+
+model Badge {
+  id          String   @id @default(cuid())
+  code        String   @unique
+  title       String
+  description String   @db.Text
+  iconUrl     String?
+  expReward   Int      @default(50)
+  createdAt   DateTime @default(now())
+
+  // Relations
+  userBadges UserBadge[]
+
+  @@index([code])
+}
+
+model UserBadge {
+  id        String   @id @default(cuid())
+  userId    String
+  badgeId   String
+  awardedAt DateTime @default(now())
+
+  // Relations
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  badge Badge @relation(fields: [badgeId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, badgeId])
+  @@index([userId])
+  @@index([badgeId])
+}
+
+model Quiz {
+  id          String       @id @default(cuid())
+  title       String
+  description String       @db.Text
+  category    QuizCategory
+  difficulty  Difficulty   @default(EASY)
+  expReward   Int          @default(50)
+  published   Boolean      @default(true)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  // Relations
+  questions QuizQuestion[]
+  attempts  QuizAttempt[]
+  thumbnail QuizThumbnail?
+
+  @@index([category])
+  @@index([difficulty])
+  @@index([published])
+}
+
+model QuizThumbnail {
+  quizId  String @id
+  data    Bytes  @db.MediumBlob
+  version String @db.Char(64)
+  quiz    Quiz   @relation(fields: [quizId], references: [id], onDelete: Cascade)
+}
+
+model QuizQuestion {
+  id             String       @id @default(cuid())
+  quizId         String
+  questionText   String       @db.Text
+  questionType   QuestionType @default(MULTIPLE_CHOICE)
+  options        Json
+  correctAnswers Json
+  explanation    String       @db.Text
+  order          Int          @default(0)
+
+  // Relations
+  quiz Quiz @relation(fields: [quizId], references: [id], onDelete: Cascade)
+
+  @@index([quizId])
+  @@index([order])
+}
+
+model QuizAttempt {
+  id           String   @id @default(cuid())
+  userId       String
+  quizId       String
+  score        Int
+  expEarned    Int      @default(0)
+  passed       Boolean  @default(false)
+  completedAt  DateTime @default(now())
+  submissionId String?
+  result       Json?
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  quiz Quiz @relation(fields: [quizId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, submissionId])
+  @@index([userId])
+  @@index([quizId])
+  @@index([completedAt])
+}
+
+model CommunityReplay {
+  id               String       @id @default(cuid())
+  userId           String
+  sourceRecordId   String?      @unique
+  consentedAt      DateTime?
+  reviewerId       String?
+  title            String
+  description      String       @db.Text
+  scamType         String
+  sanitizedData    Json
+  status           ReplayStatus @default(PENDING_REVIEW)
+  adminNotes       String?      @db.Text
+  reviewedAt       DateTime?
+  withdrawnAt      DateTime?
+  withdrawalReason String?      @db.Text
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+
+  // Relations
+  user         User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sourceRecord ForensicRecord? @relation(fields: [sourceRecordId], references: [id], onDelete: SetNull)
+  reviewer     User?           @relation("ReplayReviewer", fields: [reviewerId], references: [id], onDelete: SetNull)
+  attempts     ReplayAttempt[]
+
+  @@index([userId])
+  @@index([status])
+  @@index([createdAt])
+}
+
+model ReplayAttempt {
+  id           String   @id @default(cuid())
+  userId       String
+  replayId     String
+  solved       Boolean  @default(false)
+  expEarned    Int      @default(0)
+  attemptedAt  DateTime @default(now())
+  submissionId String?
+  result       Json?
+
+  // Relations
+  user   User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  replay CommunityReplay @relation(fields: [replayId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, submissionId])
+  @@index([userId])
+  @@index([replayId])
+  @@index([attemptedAt])
+}

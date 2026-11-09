@@ -1,0 +1,40 @@
+name: guardian-sandbox
+services:
+  broker:
+    build:
+      context: ../..
+      dockerfile: docker/sandbox/broker/Dockerfile
+    container_name: guardian_sandbox_broker
+    restart: unless-stopped
+    environment:
+      SANDBOX_BROKER_KEY: ${SANDBOX_BROKER_KEY:?Set SANDBOX_BROKER_KEY in .env}
+      SANDBOX_PUBLIC_URL: ${SANDBOX_PUBLIC_URL:-http://localhost:4010}
+      SANDBOX_APP_ORIGIN: ${NEXT_PUBLIC_APP_URL:-http://localhost:3000}
+      BROKER_CONTAINER: guardian_sandbox_broker
+      EGRESS_NETWORK: guardian-sandbox-egress
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - "127.0.0.1:4010:4010"
+      - "127.0.0.1:4011:4011"
+    networks: [control, egress]
+    mem_limit: 256m
+    cpus: 0.5
+    security_opt: [no-new-privileges:true]
+  web-image:
+    profiles: [images]
+    image: guardian-sandbox-web:1
+    build:
+      context: ../..
+      dockerfile: docker/sandbox/web/Dockerfile
+  egress-image:
+    profiles: [images]
+    image: guardian-sandbox-egress:1
+    build:
+      context: ../..
+      dockerfile: docker/sandbox/egress/Dockerfile
+networks:
+  control:
+    name: guardian-sandbox-control
+  egress:
+    name: guardian-sandbox-egress

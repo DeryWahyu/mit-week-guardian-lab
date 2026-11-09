@@ -1,0 +1,10 @@
+.next
+node_modules
+bun.lock
+dist
+build
+public
+.husky
+.agents
+test-results
+.tools

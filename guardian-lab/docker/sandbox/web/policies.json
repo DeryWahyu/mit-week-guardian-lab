@@ -1,0 +1,31 @@
+{
+  "ProxyMode": "fixed_servers",
+  "ProxyServer": "http://guardian-egress:3128",
+  "ProxyBypassList": "<-loopback>",
+  "DnsOverHttpsMode": "off",
+  "QuicAllowed": false,
+  "WebRtcIPHandlingPolicy": "disable_non_proxied_udp",
+  "DownloadRestrictions": 0,
+  "DownloadDirectory": "/home/kasm-user/Downloads",
+  "PromptForDownloadLocation": false,
+  "AutoOpenFileTypes": [],
+  "PasswordManagerEnabled": false,
+  "BrowserSignin": 0,
+  "SyncDisabled": true,
+  "BrowserGuestModeEnabled": false,
+  "IncognitoModeAvailability": 1,
+  "DefaultGeolocationSetting": 2,
+  "DefaultNotificationsSetting": 2,
+  "AudioCaptureAllowed": false,
+  "VideoCaptureAllowed": false,
+  "DeveloperToolsAvailability": 2,
+  "URLBlocklist": [
+    "file://*",
+    "ftp://*",
+    "chrome://settings/*",
+    "chrome://extensions/*",
+    "devtools://*"
+  ],
+  "ExtensionInstallBlocklist": ["*"],
+  "SafeBrowsingEnabled": true
+}

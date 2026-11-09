@@ -1,0 +1,109 @@
+name: guardian-lab-dev
+
+include:
+  - path:
+      - sandbox/compose.yml
+      - sandbox/compose.dev.yml
+    env_file: ../.env
+
+services:
+  app:
+    build:
+      context: ..
+      dockerfile: docker/app/Dockerfile
+      target: development
+    init: true
+    ports:
+      - "127.0.0.1:3000:3000"
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - DATABASE_URL=mysql://guardian:guardian_dev@db:3306/guardian_lab
+      - SANDBOX_BROKER_URL=http://broker:4011
+      - GUARDIAN_ML_URL=http://ml:8001
+    env_file:
+      - ../.env
+    depends_on:
+      db:
+        condition: service_healthy
+      ml:
+        condition: service_started
+      broker:
+        condition: service_started
+    networks: [default, control, ml-internal]
+    develop:
+      watch:
+        - action: sync
+          path: ..
+          target: /app
+          initial_sync: true
+          ignore:
+            - node_modules/
+            - .next/
+            - .git/
+            - .tools/
+            - .env*
+            - docker/
+            - prisma/
+            - package.json
+            - bun.lock
+            - lib/apk/toolchain.json
+            - .dockerignore
+        - action: rebuild
+          path: ../package.json
+        - action: rebuild
+          path: ../bun.lock
+        - action: rebuild
+          path: ../prisma
+        - action: rebuild
+          path: ../lib/apk/toolchain.json
+        - action: rebuild
+          path: app
+        - action: rebuild
+          path: ../.dockerignore
+  db:
+    image: mysql:8.4
+    environment:
+      MYSQL_DATABASE: guardian_lab
+      MYSQL_USER: guardian
+      MYSQL_PASSWORD: guardian_dev
+      MYSQL_ROOT_PASSWORD: guardian_dev_root
+    volumes:
+      - mysql-dev:/var/lib/mysql
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - >-
+          MYSQL_PWD="$${MYSQL_PASSWORD}" mysql --protocol=TCP --host=127.0.0.1
+          --user="$${MYSQL_USER}" "$${MYSQL_DATABASE}" --execute='SELECT 1'
+          >/dev/null 2>&1
+      interval: 5s
+      timeout: 5s
+      start_period: 30s
+      retries: 30
+    networks: [default]
+  ml:
+    build:
+      context: ../../guardian-lab-ai
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    pids_limit: 128
+    mem_limit: 512m
+    cpus: 1.0
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=16m
+    networks: [ml-internal]
+    develop:
+      watch:
+        - action: rebuild
+          path: ../../guardian-lab-ai
+
+volumes:
+  mysql-dev:
+
+networks:
+  ml-internal:
+    internal: true

@@ -1,0 +1,8 @@
+.upload:focus-within {
+  outline: 2px solid #0e7490;
+  outline-offset: 3px;
+}
+.uploadDragging {
+  border-color: #0891b2;
+  background: #e8f8fc;
+}

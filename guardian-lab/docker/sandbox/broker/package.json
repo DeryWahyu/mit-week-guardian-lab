@@ -1,0 +1,10 @@
+{
+  "name": "guardian-sandbox-broker",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "dockerode": "5.0.1",
+    "http-proxy": "1.18.1",
+    "zod": "4.6.7"
+  }
+}

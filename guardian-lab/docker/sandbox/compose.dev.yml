@@ -1,0 +1,26 @@
+# Merged with compose.yml by the development stack; paths remain relative to this folder.
+services:
+  broker:
+    depends_on:
+      web-image:
+        condition: service_completed_successfully
+      egress-image:
+        condition: service_completed_successfully
+    develop:
+      watch:
+        - action: rebuild
+          path: broker
+  web-image:
+    profiles: !reset []
+    entrypoint: ["/bin/true"]
+    develop:
+      watch:
+        - action: rebuild
+          path: web
+  egress-image:
+    profiles: !reset []
+    entrypoint: ["/bin/true"]
+    develop:
+      watch:
+        - action: rebuild
+          path: egress
